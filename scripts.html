@@ -1,28 +1,20 @@
-{% if site.footer_scripts %}
-  {% for script in site.footer_scripts %}
-    <script src="{{ script | relative_url }}"></script>
-  {% endfor %}
-{% else %}
-  <script src="{{ '/assets/js/main.min.js' | relative_url }}"></script>
-{% endif %}
-
-{% if site.search == true or page.layout == "search" %}
-  {%- assign search_provider = site.search_provider | default: "lunr" -%}
-  {%- case search_provider -%}
-    {%- when "lunr" -%}
-      {% include_cached search/lunr-search-scripts.html %}
-    {%- when "google" -%}
-      {% include_cached search/google-search-scripts.html %}
-    {%- when "algolia" -%}
-      {% include_cached search/algolia-search-scripts.html %}
-  {%- endcase -%}
-{% endif %}
-
-{% include analytics.html %}
-{% include /comments-providers/scripts.html %}
-
-{% if site.after_footer_scripts %}
-  {% for script in site.after_footer_scripts %}
-    <script src="{{ script | relative_url }}"></script>
-  {% endfor %}
+{% if site.comments.provider and page.comments %}
+{% case site.comments.provider %}
+  {% when "disqus" %}
+    {% include /comments-providers/disqus.html %}
+  {% when "discourse" %}
+    {% include /comments-providers/discourse.html %}
+  {% when "facebook" %}
+    {% include /comments-providers/facebook.html %}
+  {% when "staticman" %}
+    {% include /comments-providers/staticman.html %}
+  {% when "staticman_v2" %}
+    {% include /comments-providers/staticman_v2.html %}
+  {% when "utterances" %}
+    {% include /comments-providers/utterances.html %}
+  {% when "giscus" %}
+    {% include /comments-providers/giscus.html %}
+  {% when "custom" %}
+    {% include /comments-providers/custom_scripts.html %}
+{% endcase %}
 {% endif %}
